@@ -6,9 +6,9 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Express"
-      SA_PASSWORD: "Admin12345!"
+      MSSQL_SA_PASSWORD: "AdminSQL2024"
     ports:
-      - "1433:1433"
+      - "1444:1433"
     volumes:
       - sql_data:/var/opt/mssql
 
