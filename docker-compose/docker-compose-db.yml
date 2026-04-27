@@ -1,12 +1,9 @@
 services:
   backend-app:
-    image: eclipse-temurin:21-jre-alpine
+    image: elsermanuel/springboot-sqlserver:1.0
     container_name: elser_manuel_app
     ports:
       - "8080:8080"
-    volumes:
-      - "C:/Users/HP/Desktop/ASE251S3_T00-be:/app"
-    working_dir: /app
     networks:
       - red_proyectos
     environment:
@@ -17,7 +14,6 @@ services:
       - SPRING_DATASOURCE_PASSWORD=AdminSQL2024
       - SPRING_JPA_HIBERNATE_DDL_AUTO=none
       - SPRING_JPA_SHOW_SQL=true
-    command: java -jar ElserManuel-0.0.1-SNAPSHOT.jar
     restart: unless-stopped
 
 networks:
