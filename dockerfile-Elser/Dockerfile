@@ -39,6 +39,10 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 # docker push elsermanuel/springboot-sqlserver:1.0
 
 
-# D. EJECUTAR PARA PROBAR
+# D. EJECUTAR PARA PROBAR (Usando tus archivos de la carpeta docker-compose)
 # -------------------------------------------------------
-# docker run -d --name app-be -p 8080:8080 elsermanuel/springboot-sqlserver:1.0
+# 1. Levantar la Base de Datos primero:
+# docker-compose -f docker-compose/docker-compose-sql.yml up -d
+
+# 2. Levantar la Aplicación:
+# docker-compose -f docker-compose/docker-compose-db.yml up -d
