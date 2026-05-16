@@ -1,7 +1,8 @@
 package com.ValleGrande.ElserManuel.controller;
 
-import com.ValleGrande.ElserManuel.entity.Empleado;
-import com.ValleGrande.ElserManuel.service.EmpleadoService;
+
+import com.ValleGrande.ElserManuel.entity.Proveedor;
+import com.ValleGrande.ElserManuel.service.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,34 +10,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/empleados")
-public class EmpleadoController {
+@RequestMapping("/api/v1/proveedores")
+public class ProveedorController {
 
     @Autowired
-    private EmpleadoService service;
+    private ProveedorService service;
 
     @GetMapping
-    public List<Empleado> listar() {
+    public List<Proveedor> listar() {
         return service.listarActivos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Empleado> obtener(@PathVariable Long id) {
+    public ResponseEntity<Proveedor> obtener(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Empleado guardar(@RequestBody Empleado e) {
-        return service.guardar(e);
+    public Proveedor guardar(@RequestBody Proveedor p) {
+        return service.guardar(p);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Empleado> actualizar(@PathVariable Long id, @RequestBody Empleado e) {
+    public ResponseEntity<Proveedor> actualizar(@PathVariable Long id, @RequestBody Proveedor p) {
         try {
-            return ResponseEntity.ok(service.actualizar(id, e));
-        } catch (Exception ex) {
+            return ResponseEntity.ok(service.actualizar(id, p));
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
