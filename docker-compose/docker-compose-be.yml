@@ -1,6 +1,6 @@
 services:
   backend-app:
-    image: elsermanuel/springboot-sqlserver:1.0
+    image: elsermanuel/ase251s3_t00_be:latest   # imagen desde Docker Hub
     container_name: elser_manuel_app
     ports:
       - "8080:8080"
@@ -8,7 +8,6 @@ services:
       - red_proyectos
     environment:
       - TZ=America/Lima
-      # Configuramos la conexión usando el nombre del servicio DB
       - SPRING_DATASOURCE_URL=jdbc:sqlserver://sqlserver:1433;databaseName=ConstruccionDB;encrypt=true;trustServerCertificate=true
       - SPRING_DATASOURCE_USERNAME=sa
       - SPRING_DATASOURCE_PASSWORD=AdminSQL2024

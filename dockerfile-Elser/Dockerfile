@@ -1,48 +1,20 @@
-# Stage 1: Build with Maven
-# Imagen base personalizada de Maven en tu Docker Hub
-FROM elsermanuel/maven:3.9.9-amazoncorretto-21-alpine AS builder
+# ── Etapa 1: Build ────────────────────────────────────────────
+FROM maven:3.9.14-eclipse-temurin-21 AS build
 WORKDIR /app
+
 COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -B
 
-# Stage 2: Run with Java
-# Imagen base personalizada de JRE en tu Docker Hub
-FROM elsermanuel/eclipse-temurin:21-jre-alpine
+# ── Etapa 2: Runtime ──────────────────────────────────────────
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+
+COPY --from=build /app/target/*.jar app.jar
+
+ENV TZ=America/Lima
+EXPOSE 8080
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
-
-# --- GUÍA PARA EL ENTREGABLE (Docker Hub) ---
-
-# A. SUBIR IMÁGENES BASE A TU CUENTA (Hacer esto una vez)
-# -------------------------------------------------------
-# 1. Maven:
-# docker pull maven:3.9.9-amazoncorretto-21-alpine
-# docker tag maven:3.9.9-amazoncorretto-21-alpine elsermanuel/maven:3.9.9-amazoncorretto-21-alpine
-# docker push elsermanuel/maven:3.9.9-amazoncorretto-21-alpine
-
-# 2. JRE:
-# docker pull eclipse-temurin:21-jre-alpine
-# docker tag eclipse-temurin:21-jre-alpine elsermanuel/eclipse-temurin:21-jre-alpine
-# docker push elsermanuel/eclipse-temurin:21-jre-alpine
-
-
-# B. CONSTRUIR TU APLICACIÓN
-# -------------------------------------------------------
-# docker build -t elsermanuel/springboot-sqlserver:1.0 -f dockerfile-Elser/Dockerfile .
-
-
-# C. SUBIR TU APLICACIÓN A DOCKER HUB
-# -------------------------------------------------------
-# docker push elsermanuel/springboot-sqlserver:1.0
-
-
-# D. EJECUTAR PARA PROBAR (Usando tus archivos de la carpeta docker-compose)
-# -------------------------------------------------------
-# 1. Levantar la Base de Datos primero:
-# docker-compose -f docker-compose/docker-compose-sql.yml up -d
-
-# 2. Levantar la Aplicación:
-# docker-compose -f docker-compose/docker-compose-db.yml up -d
